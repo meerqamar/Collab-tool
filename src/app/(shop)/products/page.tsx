@@ -6,7 +6,7 @@ import Loading from './loading';
 async function ProductList({ q, category }: { q?: string; category?: string }) {
   await new Promise(resolve => setTimeout(resolve, 800));
   
-  let products = [];
+  let products: any[] = [];
   try {
     products = await prisma.product.findMany({
       where: {
@@ -29,10 +29,10 @@ async function ProductList({ q, category }: { q?: string; category?: string }) {
       { id: 105, name: 'Zero-Trust Security Encryption Key', price: 799.0, stock: 20, categoryId: 2, createdAt: new Date() },
       { id: 106, name: 'Global DNS Discovery Load Balancer', price: 349.0, stock: 80, categoryId: 3, createdAt: new Date() },
     ];
-    products = fallbackProducts.filter(p => !q || p.name.toLowerCase().includes(q.toLowerCase())) as unknown as typeof products;
+    products = fallbackProducts.filter(p => !q || p.name.toLowerCase().includes(q.toLowerCase()));
   }
 
-  return <ProductGrid products={products} />;
+  return <ProductGrid products={products as any} />;
 }
 
 export default async function ProductsPage({
