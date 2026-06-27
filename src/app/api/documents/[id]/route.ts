@@ -33,8 +33,8 @@ export async function GET(
       doc = await prisma.document.create({
         data: {
           id,
-          title: 'Project 4: Real-Time Architecture Capstone',
-          content: '<h2>Welcome to Project 4 Collaborative Editor</h2><p>Start typing here to test live collaborative synchronization, version snapshotting, and presence tracking.</p>',
+          title: 'Synapse Studio | Master Architecture Document',
+          content: '<h2>Welcome to Synapse Studio Enterprise Editor</h2><p>Experience real-time sub-millisecond collaborative synchronization, immutable snapshot histories, and AI copilot writing workflows.</p>',
           ownerId: owner.id,
         },
         include: {
