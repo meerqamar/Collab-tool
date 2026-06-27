@@ -25,12 +25,12 @@ export function SearchBar({ initialQuery = '' }: { initialQuery?: string }) {
  };
 
  return (
-   <input
-     type="text"
-     placeholder="Search products..."
-     value={optimisticQuery}
-     onChange={(e) => handleSearch(e.target.value)}
-     className="w-full border rounded-lg p-4 mb-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-   />
+    <input
+      type="text"
+      placeholder="Search products..."
+      value={optimisticQuery}
+      onChange={(e) => handleSearch(e.target.value)}
+      className="w-full bg-slate-900/90 text-slate-100 placeholder-slate-400 border border-slate-800 rounded-xl p-4 mb-6 shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-base font-medium"
+    />
  );
 }

@@ -212,7 +212,7 @@ export function CollaborationEditor({
             value={title}
             disabled={!canEdit}
             onChange={(e) => setTitle(e.target.value)}
-            className="font-extrabold text-2xl md:text-3xl bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 -ml-2"
+            className="font-extrabold text-2xl md:text-3xl bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 -ml-2"
           />
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 rounded-full border border-indigo-200 dark:border-indigo-800">
             <Shield className="w-3.5 h-3.5" />
@@ -300,7 +300,7 @@ export function CollaborationEditor({
                 if (!saving) handleSave(false);
               }}
               placeholder="Type your Notion-style notes here... Select text and press Cmd+K / Ctrl+K for AI Assistant."
-              className="w-full h-[450px] bg-transparent resize-none border-none focus:outline-none font-mono text-base leading-relaxed"
+              className="w-full h-[450px] bg-transparent text-slate-900 dark:text-slate-100 placeholder-slate-400 resize-none border-none focus:outline-none font-mono text-base leading-relaxed"
             />
           ) : (
             <div 
