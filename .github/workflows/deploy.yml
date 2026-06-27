@@ -45,7 +45,8 @@ jobs:
         run: |
           DEPLOY_URL="${{ steps.deploy.outputs.deployment_url }}"
           echo "Testing health endpoint at: $DEPLOY_URL/api/health"
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$DEPLOY_URL/api/health")
+          curl -s -i "$DEPLOY_URL/api/health" | head -20
+          STATUS=$(curl -s -L -o /dev/null -w "%{http_code}" "$DEPLOY_URL/api/health")
           if [ "$STATUS" -ne 200 ]; then
             echo "Health check failed with HTTP status: $STATUS"
             exit 1
