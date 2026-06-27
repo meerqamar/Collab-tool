@@ -121,17 +121,22 @@ async function main() {
     create: { id: 3, name: 'ai' },
   });
 
-  await prisma.product.createMany({
-    data: [
-      { id: 101, name: 'Synapse Enterprise Cloud License', price: 999.0, stock: 100, categoryId: softwareCat.id },
-      { id: 102, name: 'Distributed Edge Caching Node', price: 499.0, stock: 50, categoryId: infraCat.id },
-      { id: 103, name: 'AI Copilot Token Bundle (10M)', price: 299.0, stock: 500, categoryId: aiCat.id },
-      { id: 104, name: 'Real-Time Telemetry & Audit Dashboard', price: 199.0, stock: 250, categoryId: softwareCat.id },
-      { id: 105, name: 'Zero-Trust Security Encryption Key', price: 799.0, stock: 20, categoryId: infraCat.id },
-      { id: 106, name: 'Global DNS Discovery Load Balancer', price: 349.0, stock: 80, categoryId: aiCat.id },
-    ],
-    skipDuplicates: true,
-  });
+  const products = [
+    { id: 101, name: 'Synapse Enterprise Cloud License', price: 999.0, stock: 100, categoryId: softwareCat.id },
+    { id: 102, name: 'Distributed Edge Caching Node', price: 499.0, stock: 50, categoryId: infraCat.id },
+    { id: 103, name: 'AI Copilot Token Bundle (10M)', price: 299.0, stock: 500, categoryId: aiCat.id },
+    { id: 104, name: 'Real-Time Telemetry & Audit Dashboard', price: 199.0, stock: 250, categoryId: softwareCat.id },
+    { id: 105, name: 'Zero-Trust Security Encryption Key', price: 799.0, stock: 20, categoryId: infraCat.id },
+    { id: 106, name: 'Global DNS Discovery Load Balancer', price: 349.0, stock: 80, categoryId: aiCat.id },
+  ];
+
+  for (const p of products) {
+    await prisma.product.upsert({
+      where: { id: p.id },
+      update: p,
+      create: p,
+    });
+  }
 
   console.log('✅ Seeded database successfully with Gigs, Categories, Products, and Docs!');
 }
