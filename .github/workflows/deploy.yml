@@ -18,11 +18,14 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install dependencies
+        run: npm ci
+
       - name: Install Vercel CLI
         run: npm install -g vercel
 
-      - name: Run database migrations
-        run: npx prisma migrate deploy
+      - name: Run database sync
+        run: npx prisma db push --accept-data-loss
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 

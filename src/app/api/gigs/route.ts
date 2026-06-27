@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { getCached, redis } from '@/lib/redis';
 import { checkRateLimit } from '@/lib/rateLimit';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = searchParams.get('page') ?? '1';
