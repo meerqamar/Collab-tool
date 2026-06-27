@@ -31,7 +31,7 @@ export async function POST(request: Request) {
         aiOutput = `[Français] ${selectedText.trim()} (Traduction certifiée AI).`;
         break;
       case 'Continue':
-        aiOutput = ` Moreover, continuous automated deployment verification guarantees zero regressions in live production environments.`;
+        aiOutput = `${selectedText} Moreover, continuous automated deployment verification guarantees zero regressions in live production environments.`;
         break;
       default:
         aiOutput = selectedText;

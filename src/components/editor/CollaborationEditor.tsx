@@ -50,6 +50,7 @@ export function CollaborationEditor({
   const [aiError, setAiError] = useState('');
 
   const editorRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const canEdit = currentUserRole !== 'VIEWER';
 
@@ -109,20 +110,31 @@ export function CollaborationEditor({
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
-        const selection = window.getSelection()?.toString();
+        let selection = window.getSelection()?.toString() || '';
+        if (!selection && textareaRef.current) {
+          const start = textareaRef.current.selectionStart;
+          const end = textareaRef.current.selectionEnd;
+          if (start !== end) {
+            selection = textareaRef.current.value.substring(start, end);
+          }
+        }
+        if (!selection && content.trim()) {
+          selection = content.trim(); // Fallback to entire content if nothing highlighted
+        }
+
         if (selection) {
           setSelectedText(selection);
           setShowAiPalette(true);
           setAiError('');
         } else {
-          setAiError('Please select some text in the editor first to use AI assistant.');
+          setAiError('Please enter some text in the editor first to use AI assistant.');
           setShowAiPalette(true);
         }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [content]);
 
   // Save changes
   const handleSave = async (createVersion = false) => {
@@ -294,6 +306,7 @@ export function CollaborationEditor({
         <div className="space-y-4">
           {canEdit ? (
             <textarea
+              ref={textareaRef}
               value={content}
               onChange={(e) => {
                 setContent(e.target.value);
