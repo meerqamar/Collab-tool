@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import type { Product } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { ProductGrid, SearchBar } from '@/features/products';
 import Loading from './loading';
@@ -6,7 +7,7 @@ import Loading from './loading';
 async function ProductList({ q, category }: { q?: string; category?: string }) {
   await new Promise(resolve => setTimeout(resolve, 800));
   
-  let products: any[] = [];
+  let products: Product[] = [];
   try {
     products = await prisma.product.findMany({
       where: {
@@ -15,7 +16,7 @@ async function ProductList({ q, category }: { q?: string; category?: string }) {
       },
       include: { category: true },
       orderBy: { createdAt: 'desc' },
-    });
+    }) as unknown as Product[];
   } catch (err) {
     console.error('Database connection failed in production render, using fallback items:', err);
   }
@@ -29,10 +30,10 @@ async function ProductList({ q, category }: { q?: string; category?: string }) {
       { id: 105, name: 'Zero-Trust Security Encryption Key', price: 799.0, stock: 20, categoryId: 2, createdAt: new Date() },
       { id: 106, name: 'Global DNS Discovery Load Balancer', price: 349.0, stock: 80, categoryId: 3, createdAt: new Date() },
     ];
-    products = fallbackProducts.filter(p => !q || p.name.toLowerCase().includes(q.toLowerCase()));
+    products = fallbackProducts.filter(p => !q || p.name.toLowerCase().includes(q.toLowerCase())) as unknown as Product[];
   }
 
-  return <ProductGrid products={products as any} />;
+  return <ProductGrid products={products} />;
 }
 
 export default async function ProductsPage({

@@ -19,7 +19,7 @@ async function main() {
   });
 
   // Create Project 4 Initial Document & Permissions
-  const doc = await prisma.document.create({
+  await prisma.document.create({
     data: {
       id: 'proj4-doc-1',
       title: 'Project 4: Real-Time Capstone Specs',

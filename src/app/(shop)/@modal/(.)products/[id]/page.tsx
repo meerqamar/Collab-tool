@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/prisma';
-import { notFound } from 'next/navigation';
 import { Modal } from '@/app/components/Modal';
 
 export default async function ProductModal({ params }: { params: Promise<{ id: string }> }) {
