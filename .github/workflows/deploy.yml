@@ -57,8 +57,8 @@ jobs:
         uses: getsentry/action-release@v1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: growurk
-          SENTRY_PROJECT: project-4
+          SENTRY_ORG: vision-labs
+          SENTRY_PROJECT: javascript-nextjs
         with:
           environment: production
           version: ${{ github.sha }}
