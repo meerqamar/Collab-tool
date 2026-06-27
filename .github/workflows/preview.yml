@@ -1,0 +1,32 @@
+name: Preview Deployment
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Deploy Preview to Vercel
+        id: preview
+        run: |
+          npm install -g vercel
+          vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --token=${{ secrets.VERCEL_TOKEN }}
+          URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$URL" >> $GITHUB_OUTPUT
+
+      - name: Comment PR with preview URL
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            🚀 **Deploy Preview Ready**: ${{ steps.preview.outputs.url }}

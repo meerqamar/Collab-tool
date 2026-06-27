@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String
+  products Product[]
+}
+
+model Product {
+  id         Int         @id @default(autoincrement())
+  name       String
+  price      Float
+  stock      Int?        @default(100)
+  categoryId Int?
+  category   Category?   @relation(fields: [categoryId], references: [id])
+  createdAt  DateTime    @default(now())
+  orderItems OrderItem[]
+}
+
+model User {
+  id          Int                  @id @default(autoincrement())
+  email       String               @unique
+  name        String?
+  createdAt   DateTime             @default(now())
+  orders      Order[]
+  documents   Document[]           @relation("DocumentOwner")
+  permissions DocumentPermission[]
+}
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  userId    Int
+  user      User        @relation(fields: [userId], references: [id])
+  total     Float
+  status    String      @default("PENDING")
+  items     OrderItem[]
+  createdAt DateTime    @default(now())
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  orderId   Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  quantity  Int
+  price     Float
+}
+
+model Gig {
+  id           String   @id @default(uuid())
+  title        String
+  description  String
+  category     String   @default("all")
+  price        Int
+  rating       Float    @default(5.0)
+  tags         String?  @default("react,nextjs")
+  sellerId     Int?
+  sellerName   String?  @default("Top Seller")
+  deliveryDays Int      @default(3)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Document {
+  id          String               @id @default(uuid())
+  title       String               @default("Untitled Document")
+  content     String               @default("")
+  ownerId     Int
+  owner       User                 @relation("DocumentOwner", fields: [ownerId], references: [id])
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  versions    DocumentVersion[]
+  permissions DocumentPermission[]
+}
+
+model DocumentVersion {
+  id              String   @id @default(uuid())
+  documentId      String
+  document        Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  contentSnapshot String
+  commitMessage   String?
+  createdAt       DateTime @default(now())
+}
+
+model DocumentPermission {
+  id         String   @id @default(uuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       String   @default("VIEWER")
+
+  @@unique([documentId, userId])
+}
